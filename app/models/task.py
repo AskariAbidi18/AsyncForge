@@ -1,11 +1,6 @@
 from app.utils.time import now
+from app.utils.constants import Status
 import uuid
-class Status:
-    PENDING = "PENDING"
-    RUNNING = "RUNNING"
-    COMPLETED = "COMPLETED"
-    FAILED = "FAILED"
-    DEAD = "DEAD"
 
 class Task:
     def __init__(self, task_type, payload, max_retries):
