@@ -1,15 +1,9 @@
 import time
 import random
 from app.utils.constants import TaskTypes
-
-def is_dict(payload):
-    if isinstance(payload, dict):
-        return True
-    else:
-        return False
     
 def send_email_handler(payload): 
-    if not is_dict(payload):
+    if not isinstance(payload, dict):
         raise ValueError("Payload must be a dictionary")
     
     if "to" not in payload or "body" not in payload:
@@ -21,7 +15,7 @@ def send_email_handler(payload):
         raise Exception("Simulated email sending failure")
 
 def generate_report_handler(payload):
-    if not is_dict(payload):
+    if not isinstance(payload, dict):
         raise ValueError("Payload must be a dictionary")
     if "report_id" not in payload:
         raise ValueError("Missing 'report_id' in payload")
@@ -32,7 +26,7 @@ def generate_report_handler(payload):
         raise Exception("Simulated report generation failure")
     
 def process_image_handler(payload):
-    if not is_dict(payload):
+    if not isinstance(payload, dict):
         raise ValueError("Payload must be a dictionary")
     if "image_path" not in payload:
         raise ValueError("Missing 'image_path' in payload")
@@ -43,7 +37,7 @@ def process_image_handler(payload):
         raise Exception("Simulated image processing failure")
     
 def webhook_call_handler(payload):
-    if not is_dict(payload):
+    if not isinstance(payload, dict):
         raise ValueError("Payload must be a dictionary")
     if "url" not in payload or "data" not in payload:
         raise ValueError("Missing 'url' or 'data' in payload")
