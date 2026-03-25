@@ -1,6 +1,7 @@
 from app.models.task import Task
 from app.utils.constants import Status, TaskTypes
 from app.utils.time import now
+from app.queue.producer import enqueue_task
 import json
 
 task_store = {}
@@ -39,6 +40,9 @@ def create_task(task_type, payload, max_retries):
     task = Task(task_type, payload, max_retries) 
 
     task_store[task.task_id] = task
+    
+    enqueue_task(task.task_id)
+    print(f"[TASK CREATED] {task.task_id} | type={task.task_type}")
 
     return task.task_id   
 

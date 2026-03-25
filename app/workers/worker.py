@@ -2,7 +2,6 @@ import time
 
 from app.services.task_service import (
     get_task,
-    list_tasks_by_status,
     mark_task_running,
     mark_task_completed,
     handle_task_failure,
@@ -11,56 +10,48 @@ from app.services.task_service import (
 
 from app.workers.handlers import get_handler
 from app.utils.constants import Status
-
-
-def get_next_pending_task():
-    pending_tasks = list_tasks_by_status(Status.PENDING)
-
-    if not pending_tasks:
-        return None
-
-    return pending_tasks[0]
-
+from app.queue.consumer import get_next_task
 
 def execute_task(task_id):
-    task = get_task(task_id)
 
-    print(f"[WORKER] Picked task {task_id} ({task.task_type})")
+    try:
+        task = get_task(task_id)
+    except ValueError:
+        print(f"[WORKER] task {task_id} not found in memory, skipping")
+        return
+
+    print(f"[WORKER] executing {task_id} ({task.task_type})")
 
     result = mark_task_running(task_id)
 
     if result == "ignore":
-        print(f"[WORKER] Ignoring task {task_id}")
+        print(f"[WORKER] ignoring {task_id}")
         return
 
     try:
         handler = get_handler(task.task_type)
-
-        print(f"[WORKER] Executing handler for {task_id}")
         handler(task.payload)
 
         mark_task_completed(task_id)
 
-        print(f"[WORKER] Task {task_id} completed")
+        print(f"[WORKER] completed {task_id}")
 
     except Exception as e:
-        print(f"[WORKER] Task {task_id} failed: {e}")
+        print(f"[WORKER] failed {task_id}: {e}")
 
         new_status = handle_task_failure(task_id, str(e))
 
         if new_status == Status.FAILED:
-            print(f"[WORKER] Retrying task {task_id}")
+            print(f"[WORKER] retrying {task_id}")
             reset_task_for_retry(task_id)
 
-
 def worker_loop():
-    print("Worker started...")
+    print("[WORKER] started")
 
     while True:
-        task = get_next_pending_task()
+        task_id = get_next_task()
 
-        if task is None:
-            time.sleep(1)
-            continue
+        print("[WORKER] received task:", task_id)
 
-        execute_task(task.task_id)
+        if task_id:
+            execute_task(task_id)
