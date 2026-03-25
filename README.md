@@ -157,28 +157,28 @@ FAILED → RETRY → DEAD
 ---
 
 ## 📁 Project Structure
-'''
+
 AsyncForge/
 │
-├── worker.py
-├── test_run.py
+├── worker.py # Entry point for worker execution
+├── test_run.py # Local testing script
 │
 └── app/
-├── config.py
-├── database.py
-├── redis_client.py
+├── config.py # Configuration settings
+├── database.py # PostgreSQL connection
+├── redis_client.py # Redis client setup
 │
 ├── api/
-│ └── tasks.py
+│ └── tasks.py # API endpoints
 │
 ├── models/
-│ └── task.py
+│ └── task.py # DB model
 │
 ├── schemas/
-│ └── task.py
+│ └── task.py # Validation schemas
 │
 ├── services/
-│ └── task_service.py
+│ └── task_service.py # Business logic
 │
 ├── queue/
 │ ├── producer.py
@@ -193,7 +193,6 @@ AsyncForge/
 └── utils/
 ├── constants.py
 └── time.py
-'''
 
 ---
 
