@@ -69,10 +69,11 @@ Client/API
 - Updates task status  
 
 Task lifecycle:
+```
 PENDING → RUNNING → COMPLETED
 ↓
 FAILED → RETRY → DEAD
-
+```
 
 ---
 
