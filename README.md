@@ -157,7 +157,7 @@ FAILED → RETRY → DEAD
 ---
 
 ## 📁 Project Structure
-
+'''
 AsyncForge/
 │
 ├── worker.py
@@ -193,7 +193,7 @@ AsyncForge/
 └── utils/
 ├── constants.py
 └── time.py
-
+'''
 
 ---
 
