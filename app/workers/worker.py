@@ -11,6 +11,7 @@ from app.services.task_service import (
 from app.workers.handlers import get_handler
 from app.utils.constants import Status
 from app.queue.consumer import get_next_task
+from app.queue.producer import enqueue_task
 
 def execute_task(task_id):
 
@@ -44,6 +45,7 @@ def execute_task(task_id):
         if new_status == Status.FAILED:
             print(f"[WORKER] retrying {task_id}")
             reset_task_for_retry(task_id)
+            enqueue_task(task_id)
 
 def worker_loop():
     print("[WORKER] started")

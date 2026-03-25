@@ -4,7 +4,7 @@ import uuid
 
 class Task:
     def __init__(self, task_type, payload, max_retries):
-        self.task_id = uuid.uuid4()
+        self.task_id = str(uuid.uuid4())
         self.task_type = task_type
         self.payload = payload
         self.max_retries = max_retries

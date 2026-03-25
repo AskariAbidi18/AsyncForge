@@ -85,6 +85,8 @@ def handle_task_failure(task_id, error_message):
 
     task_store[task_id] = task
 
+    return task.status
+
 def reset_task_for_retry(task_id):
     task = get_task(task_id)
 
