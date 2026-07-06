@@ -6,7 +6,7 @@ It combines Redis for fast task queuing and PostgreSQL as the source of truth to
 
 ---
 
-## 🚀 Overview
+## Overview
 
 AsyncForge enables clients to submit tasks that are processed asynchronously by worker processes.
 
@@ -21,7 +21,7 @@ Client/API
 
 ---
 
-## ⚙️ Key Features
+## Key Features
 
 - **Asynchronous task execution** using worker-based architecture  
 - **Redis-backed queue system** (LPUSH / BRPOP) for efficient task distribution  
@@ -33,7 +33,7 @@ Client/API
 
 ---
 
-## 🧱 Architecture
+## Architecture
 
 ### Core Components
 
@@ -77,7 +77,7 @@ FAILED → RETRY → DEAD
 
 ---
 
-## 🔁 Retry Mechanism
+## Retry Mechanism
 
 - Failed tasks increment retry count  
 - If retries remain:
@@ -86,7 +86,7 @@ FAILED → RETRY → DEAD
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 AsyncForge/
@@ -128,7 +128,7 @@ AsyncForge/
 
 ---
 
-## 🧠 Design Principles
+## Design Principles
 
 - **Separation of concerns**  
   API ≠ business logic ≠ execution  
@@ -144,7 +144,7 @@ AsyncForge/
 
 ---
 
-## ⚠️ Notes
+## Notes
 
 - AsyncForge is designed as a **learning and experimental system** inspired by distributed task queues (e.g., Celery)  
 - Focus is on understanding system design, reliability, and async processing  
@@ -152,7 +152,7 @@ AsyncForge/
 
 ---
 
-## 🚀 Future Improvements
+## Future Improvements
 
 - Task prioritization  
 - Monitoring and dashboard  
@@ -161,13 +161,13 @@ AsyncForge/
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 Askari Abidi
 
 ---
 
-## 📌 Summary
+## Summary
 
 AsyncForge is a modular distributed task processing system that:
 
