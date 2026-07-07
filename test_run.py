@@ -7,6 +7,25 @@ from app.utils.constants import TaskTypes
 
 from app.redis_client import redis_client
 
+from app.config import settings
+from app.database import engine
+
+print("========== CONFIG ==========")
+print(f"Postgres DB : {settings.POSTGRES_DB}")
+print(f"Redis Host  : {settings.REDIS_HOST}")
+
+print("\n========== DATABASE ==========")
+
+try:
+    with engine.connect():
+        print("✓ PostgreSQL Connected")
+except Exception as e:
+    print("✗ PostgreSQL Connection Failed")
+    print(e)
+    exit()
+
+print("\n========== REDIS ==========")
+
 redis_client.delete("asyncforge:tasks")
 
 
