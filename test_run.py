@@ -10,6 +10,12 @@ from app.redis_client import redis_client
 from app.config import settings
 from app.database import engine
 
+from app.main import init_db
+
+from app.database import SessionLocal
+
+init_db()
+
 print("========== CONFIG ==========")
 print(f"Postgres DB : {settings.POSTGRES_DB}")
 print(f"Redis Host  : {settings.REDIS_HOST}")
@@ -39,31 +45,39 @@ worker_thread.start()
 
 time.sleep(1)
 
+db = SessionLocal()
+
 print("Creating tasks...")
 
 create_task(
+    db,
     TaskTypes.SEND_EMAIL,
     {"to": "alice@test.com", "body": "Hello Alice"},
     2
 )
 
 create_task(
+    db,
     TaskTypes.PROCESS_IMAGE,
     {"image_path": "/tmp/photo.png"},
     3
 )
 
 create_task(
+    db,
     TaskTypes.GENERATE_REPORT,
     {"report_id": "RPT-001"},
     1
 )
 
 create_task(
+    db,
     TaskTypes.WEBHOOK_CALL,
     {"url": "https://example.com/webhook", "data": {"event": "test"}},
     2
 )
+
+db.close()
 
 print("Tasks submitted.")
 
