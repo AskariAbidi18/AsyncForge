@@ -2,7 +2,7 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
 
-import uuid
+from uuid import UUID
 
 
 class CreateTaskRequest(BaseModel):
@@ -12,7 +12,7 @@ class CreateTaskRequest(BaseModel):
 
 
 class TaskResponse(BaseModel):
-    task_id: str
+    task_id: UUID
     task_type: str
     payload: dict
     status: str
@@ -25,4 +25,9 @@ class TaskResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 class TaskCreatedResponse(BaseModel):
-    task_id : uuid.UUID
+    task_id : UUID
+
+from pydantic import BaseModel
+
+class MessageResponse(BaseModel):
+    message: str
