@@ -18,19 +18,11 @@ def execute_task(db, task_id):
 
     try:
         task = get_task(db, task_id)
-    except ValueError:
-        print(f"[WORKER] task {task_id} not found in memory, skipping")
-        return
 
-    print(f"[WORKER] executing {task_id} ({task.task_type})")
+        print(f"[WORKER] executing {task_id} ({task.task_type})")
 
-    result = mark_task_running(db, task_id)
+        mark_task_running(db, task_id)
 
-    if result == "ignore":
-        print(f"[WORKER] ignoring {task_id}")
-        return
-
-    try:
         handler = get_handler(task.task_type)
         handler(task.payload)
 
@@ -38,15 +30,27 @@ def execute_task(db, task_id):
 
         print(f"[WORKER] completed {task_id}")
 
+    except ValueError as e:
+        print(f"[WORKER] {e}")
+
     except Exception as e:
         print(f"[WORKER] failed {task_id}: {e}")
 
-        new_status = handle_task_failure(db, task_id, str(e))
+        try:
+            handle_task_failure(
+                db,
+                task_id,
+                str(e),
+            )
 
-        if new_status == Status.FAILED:
-            print(f"[WORKER] retrying {task_id}")
-            reset_task_for_retry(db, task_id)
-            enqueue_task(task_id)
+            task = get_task(db, task_id)
+
+            if task.status == Status.FAILED:
+                print(f"[WORKER] retrying {task_id}")
+                reset_task_for_retry(db, task_id)
+
+        except Exception as inner:
+            print(f"[WORKER] retry failed: {inner}")
 
 def worker_loop():
     print("[WORKER] started")

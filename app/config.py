@@ -1,4 +1,7 @@
+import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+ENV_FILE = os.getenv("ENV_FILE", ".env.local")
 
 
 class Settings(BaseSettings):
@@ -15,7 +18,7 @@ class Settings(BaseSettings):
     REDIS_DB: int
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=ENV_FILE,
         extra="ignore",
     )
 
