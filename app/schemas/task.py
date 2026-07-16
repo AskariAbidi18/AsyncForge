@@ -9,7 +9,6 @@ class CreateTaskRequest(BaseModel):
     task_type: str
     payload: dict
     max_retries: int
-    is_batch = False
 
 class TaskResponse(BaseModel):
     task_id: UUID
