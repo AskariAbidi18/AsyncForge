@@ -46,7 +46,12 @@ def create_new_task(
             status_code = 400,
             detail = str(e)
         )
-
+@router.post("/create/batch")
+def create_tasks_batch(
+    request: list[CreateTaskRequest],
+    db: Session = Depends(get_db)
+):
+    return
 @router.get(
     "/{task_id}",
     response_model = TaskResponse,
