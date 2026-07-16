@@ -10,7 +10,14 @@ from app.schemas.task import (
     TaskCreatedResponse,
     TaskResponse,
 )
-from app.services.task_service import create_task, get_task, list_tasks, reset_task_for_retry, delete_task
+from app.services.task_service import (
+    create_task,
+    delete_task,
+    get_task,
+    list_tasks,
+    reset_task_for_retry,
+)
+
 router = APIRouter(
     prefix="/tasks",
     tags=["Tasks"],
@@ -70,7 +77,7 @@ def list_all_tasks(
         return tasks
     except ValueError as e:
         raise HTTPException(
-            status_code = 404,
+            status_code = 400,
             detail = str(e)
         )
 
@@ -86,9 +93,18 @@ def retry_task(
         task = reset_task_for_retry(db, task_id)
         return task
     except ValueError as e:
+
+        message = str(e)
+
+        if "does not exist" in message:
+            raise HTTPException(
+                status_code=404,
+                detail=message,
+            )
+
         raise HTTPException(
-            status_code = 409,
-            detail = str(e)
+            status_code=409,
+            detail=message,
         )
 
 @router.delete(
