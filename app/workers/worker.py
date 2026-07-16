@@ -31,7 +31,23 @@ def execute_task(db, task_id):
         print(f"[WORKER] completed {task_id}")
 
     except ValueError as e:
-        print(f"[WORKER] {e}")
+        print(f"[WORKER] failed {task_id}: {e}")
+
+        try:
+            handle_task_failure(
+                db,
+                task_id,
+                str(e),
+            )
+
+            task = get_task(db, task_id)
+
+            if task.status == Status.FAILED:
+                print(f"[WORKER] retrying {task_id}")
+                reset_task_for_retry(db, task_id)
+
+        except Exception as inner:
+            print(f"[WORKER] retry failed: {inner}")
 
     except Exception as e:
         print(f"[WORKER] failed {task_id}: {e}")
